@@ -2,7 +2,7 @@
   "name": "parcel-project-template",
   "version": "2.0.0",
   "description": "",
-  "homepage": "https://github.com/chell-iz-naroda/JS-HW-11",
+  "homepage": "https://chell-iz-naroda.github.io/JS-HW-11/",
   "scripts": {
     "start": "parcel src/*.html",
     "build": "parcel build src/*.html --public-url /JS-HW-11/"
