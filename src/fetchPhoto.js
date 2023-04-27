@@ -5,7 +5,8 @@ const API_KEY = '35797835-5db75a5f3a658babe088000e6';
 const BASE_URL = 'https://pixabay.com/api/';
 
 let currentPage = 1;
-let searchQuery = '';
+// let searchQuery = '';
+// console.log(searchQuery);
 
 async function fetchPhoto(name, page = 1, perPage = 40) {
   try {
@@ -21,6 +22,7 @@ async function fetchPhoto(name, page = 1, perPage = 40) {
       },
     });
     const hits = response.data;
+    // console.log(page);
     return hits;
   } catch (error) {
     Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");

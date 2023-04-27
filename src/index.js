@@ -10,6 +10,7 @@ const gallery = document.querySelector('.gallery');
 const loadMoreBtn = document.querySelector('.load-more');
 let searchQuery = '';
 let  currentPage = 1;
+const perPage = 40;
 
 loadMoreBtn.classList.add('is-hidden');
 
@@ -41,19 +42,21 @@ async function onSearch(event) {
     return;
   }
   try {
-    // currentPage = 1;
     searchQuery = searchQueryValue;
+    currentPage = 1;
+
     const photos = await fetchPhoto(searchQuery , currentPage);
-    if (photos.length === 0) {
+    if (photos.hits.length === 0) {
       Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
       return;
     }
-
-    Notiflix.Notify.success(`Hooray! We found ${photos.totalHits} images.`);
     gallery.innerHTML = createPhotoCardsMarkup(photos);
-    loadMoreBtn.classList.remove('is-hidden');
+    Notiflix.Notify.success(`Hooray! We found ${photos.totalHits} images.`);
+    if (photos.totalHits > 40) {
+      loadMoreBtn.classList.remove('is-hidden');
+    }
     lightbox.refresh();
 
   } catch (error) {
@@ -97,11 +100,19 @@ function createPhotoCardsMarkup(photos) {
 async function onLoadMore() {
   try {
     const photos = await fetchPhoto(searchQuery, ++currentPage);
-    if (photos.length === 0) {
-        
-        return;
-      }
     gallery.insertAdjacentHTML('beforeend', createPhotoCardsMarkup(photos));
+    
+
+      const totalPages = Math.ceil(photos.totalHits / perPage);
+      const loadedPages = Math.ceil(gallery.querySelectorAll('.card').length / perPage);
+      // console.log(`totaPages: ${totalPages}`);
+      // console.log(`loadedPages: ${loadedPages}`);
+  
+      if (loadedPages >= totalPages) {
+        loadMoreBtn.classList.add('is-hidden');
+        Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");
+      }
+
     const { height: cardHeight } = document
     .querySelector(".gallery")
     .firstElementChild.getBoundingClientRect();
@@ -109,6 +120,7 @@ async function onLoadMore() {
     top: cardHeight * 2,
     behavior: "smooth",
     });
+
     lightbox.refresh();
   } catch (error) {
     loadMoreBtn.classList.add('is-hidden');
