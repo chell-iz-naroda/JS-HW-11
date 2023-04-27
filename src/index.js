@@ -8,6 +8,8 @@ import SimpleLightbox from "simplelightbox";
 const form = document.querySelector('#search-form');
 const gallery = document.querySelector('.gallery');
 const loadMoreBtn = document.querySelector('.load-more');
+let searchQuery = '';
+let  currentPage = 1;
 
 loadMoreBtn.classList.add('is-hidden');
 
@@ -39,9 +41,9 @@ async function onSearch(event) {
     return;
   }
   try {
-    const search = searchQueryValue;
-    currentPage = 1;
-    const photos = await fetchPhoto(search, currentPage);
+    // currentPage = 1;
+    searchQuery = searchQueryValue;
+    const photos = await fetchPhoto(searchQuery , currentPage);
     if (photos.length === 0) {
       Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
