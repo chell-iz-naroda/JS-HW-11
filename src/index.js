@@ -39,7 +39,7 @@ async function onSearch(event) {
     return;
   }
   try {
-    search = searchQueryValue;
+    const search = searchQueryValue;
     currentPage = 1;
     const photos = await fetchPhoto(search, currentPage);
     if (photos.length === 0) {
