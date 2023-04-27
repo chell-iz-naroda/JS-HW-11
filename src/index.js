@@ -39,9 +39,9 @@ async function onSearch(event) {
     return;
   }
   try {
-    searchQuery = searchQueryValue;
+    search = searchQueryValue;
     currentPage = 1;
-    const photos = await fetchPhoto(searchQuery, currentPage);
+    const photos = await fetchPhoto(search, currentPage);
     if (photos.length === 0) {
       Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
@@ -100,7 +100,6 @@ async function onLoadMore() {
         return;
       }
     gallery.insertAdjacentHTML('beforeend', createPhotoCardsMarkup(photos));
-    // Notiflix.Notify.success(`Hooray! We loaded ${photos.length} more images.`);
     const { height: cardHeight } = document
     .querySelector(".gallery")
     .firstElementChild.getBoundingClientRect();
